@@ -3,7 +3,7 @@ import { AppContext } from '../context/AppContex'
 import {FiTrash2} from 'react-icons/fi';
 const ExpenseTransaction = () => {
 
-  const {expenseData} = useContext(AppContext)
+  const {expenseData,deleteExpense} = useContext(AppContext)
   return (
     <div className='max-w-full p-4 mt-14'>
       <h1 className='text-3xl font-semibold mb-6 text-start'>Expense Transaction</h1>
@@ -28,7 +28,7 @@ const ExpenseTransaction = () => {
                   <td>{transaction.type === "income" ? "Income" : "Expense"}</td>
                   <td className="p-4 text-right font-semibold  text-red-500">$ {transaction.amount}</td>
                   <td className='p-4 text-center'>
-                      <button className='text-red-500 hover:text-red-700 transition-colors'>
+                      <button className='text-red-500 hover:text-red-700 transition-colors' onClick={()=>deleteExpense(transaction._id)}>
                         <FiTrash2 size={20}/>
                       </button>
                   </td>

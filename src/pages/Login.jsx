@@ -19,8 +19,6 @@ const Login = () => {
   const handleSubmit= (e)=>{
     e.preventDefault();
      handleLogin(formData.email,formData.password);
-     setIsModal(false)
-     Navigate("/")
   }
 
   const handleModal = ()=>{

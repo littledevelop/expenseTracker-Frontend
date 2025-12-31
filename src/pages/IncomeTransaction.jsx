@@ -2,8 +2,9 @@ import React, { useContext } from 'react'
 import { AppContext } from '../context/AppContex'
 import { FiTrash2 } from 'react-icons/fi';
 const IncomeTransaction = () => {
-    const { incomeData } = useContext(AppContext);
+    const { incomeData ,deleteIncome} = useContext(AppContext);
 
+    
   return (
      <div className='max-w-full p-4 mt-14'>
           <h1 className='text-3xl font-semibold mb-6 text-start'>Income Transaction</h1>
@@ -27,7 +28,7 @@ const IncomeTransaction = () => {
                       <td>{new Date(transaction.date).toLocaleDateString()}</td>
                       <td className="p-3 text-right font-semibold  text-green-500">$ {transaction.amount}</td>
                       <td className='p-3 text-center'>
-                          <button className='text-red-500 hover:text-red-700 transition-colors'>
+                          <button className='text-red-500 hover:text-red-700 transition-colors' onClick={()=>deleteIncome(transaction._id)}>
                             <FiTrash2 size={20}/>
                           </button>
                       </td>

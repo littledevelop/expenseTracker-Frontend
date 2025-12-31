@@ -11,7 +11,8 @@ const AppContextProvider = ({children}) => {
     const [expenseData, setExpenseData] = useState([]);
     const [incomeData, setIncomeData] = useState([]);
     const [token,setToken]= useState(Boolean(cookie.get("token") || null));
-    const backendUrl = "http://localhost:5000";
+    // const backendUrl = "http://localhost:5000"; //local
+    const backendUrl = "https://expensetracker-backend-zw1n.onrender.com"; //live
     const utoken = cookie.get("token") || null;
 
     const fetchIncomeData = useCallback(async() => {
@@ -66,16 +67,19 @@ const AppContextProvider = ({children}) => {
         }
     }
 
-    const ResetPassword= async(password)=>{
+    const ResetPassword= async(token,password)=>{
         try{
-            
-            const {data} = await axios.put(`${backendUrl}/api/resetPassword`,{password},{
+            const {data} = await axios.put(`${backendUrl}/api/resetPassword/${token}`,{password},{
                 headers:{
                     "Content-Type":"application/json",
                 }
             });
             if(data.success){
                 toast.success(data.message || "Check your password for Reset Password");
+                navigate("/");
+            }
+            else{
+                toast.error("Something Wrong");
             }
 
         }catch(err){
@@ -212,26 +216,45 @@ const AppContextProvider = ({children}) => {
         }
     }
 
-    const handleLogin = async(email,password) => {
-        try{
-            const {data} = await axios.post(`${backendUrl}/api/login`,{email,password},{
-                headers:{
-                    "content-type":"application/json",
-                }
-            });
-            if(data.success){
-                cookie.set("token",data.token,{expires:7});
-                setToken(true);
-                fetchIncomeData();
-                fetchExpenseData();
-                toast.success(data.message || "Login Successful");
-                navigate("/");
-            }
+  const handleLogin = async (email, password) => {
+  try {
+    const { data } = await axios.post(`${backendUrl}/api/login`,{ email, password },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-        }catch(err){
-            console.log(err);
-        }
+    if (data.success) {
+      // Store JWT
+      cookie.set("token", data.token, {
+        expires: 7,
+        sameSite: "lax",
+        secure: false, // set true in production (HTTPS)
+      });
+
+      // Store token in state (NOT boolean)
+      setToken(data.token);
+
+      // Fetch protected data
+      fetchIncomeData();
+      fetchExpenseData();
+
+      toast.success(data.message || "Login Successful");
+      navigate("/");
+    } else {
+      toast.error(data.message || "Invalid credentials");
     }
+  } catch (err) {
+    console.error("Login error:", err);
+
+    toast.error(
+      err.response?.data?.message || "Server error, please try again"
+    );
+  }
+};
+
 
     useEffect(() => {   
         fetchIncomeData();
