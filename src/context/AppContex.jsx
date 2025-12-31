@@ -13,11 +13,11 @@ const AppContextProvider = ({children}) => {
     const [token,setToken]= useState(Boolean(cookie.get("token") || null));
     // const backendUrl = "http://localhost:5000"; //local
     // const backendUrl = "https://expensetracker-backend-zw1n.onrender.com"; //live
+    //     const API =
+    //   process.env.REACT_APP_ENV === "production"
+    //     ? "https://expense-backend.onrender.com"
+    //     : "http://localhost:5000";
     const API = process.env.REACT_APP_API_URL;//live
-//     const API =
-//   process.env.REACT_APP_ENV === "production"
-//     ? "https://expense-backend.onrender.com"
-//     : "http://localhost:5000";
 
     const utoken = cookie.get("token") || null;
 
@@ -224,6 +224,7 @@ const AppContextProvider = ({children}) => {
 
   const handleLogin = async (email, password) => {
   try {
+    console.log(API)
     const { data } = await axios.post(`${API}/api/login`,{ email, password },
       {
         headers: {
