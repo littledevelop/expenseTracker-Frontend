@@ -12,7 +12,13 @@ const AppContextProvider = ({children}) => {
     const [incomeData, setIncomeData] = useState([]);
     const [token,setToken]= useState(Boolean(cookie.get("token") || null));
     // const backendUrl = "http://localhost:5000"; //local
-    const backendUrl = "https://expensetracker-backend-zw1n.onrender.com"; //live
+    // const backendUrl = "https://expensetracker-backend-zw1n.onrender.com"; //live
+    // const API = process.env.REACT_APP_API_URL;//live
+    const API =
+  process.env.REACT_APP_ENV === "production"
+    ? "https://expense-backend.onrender.com"
+    : "http://localhost:5000";
+
     const utoken = cookie.get("token") || null;
 
     const fetchIncomeData = useCallback(async() => {
@@ -20,7 +26,7 @@ const AppContextProvider = ({children}) => {
             if(!utoken){
                 return;
             }
-            const {data} = await axios.get(`${backendUrl}/api/get-income`,{
+            const {data} = await axios.get(`${API}/api/get-income`,{
                 headers:{
                     "Authorization": `Bearer ${utoken}`
                 }});
@@ -31,14 +37,14 @@ const AppContextProvider = ({children}) => {
         }catch(err){
             console.log(err);
         }
-    }, [utoken, backendUrl]);
+    }, [utoken, API]);
 
     const fetchExpenseData = useCallback(async() => {
         try{
             if(!utoken){
                 return;
             }
-            const {data} = await axios.get(`${backendUrl}/api/get-expense`,{
+            const {data} = await axios.get(`${API}/api/get-expense`,{
                 headers:{
                     "Authorization": `Bearer ${utoken}`
                 }});
@@ -49,11 +55,11 @@ const AppContextProvider = ({children}) => {
         }catch(err){
             console.log(err);
         }
-    }, [utoken, backendUrl]);
+    }, [utoken, API]);
 
     const ForgotPassword = async(email)=>{
         try{
-            const {data} = await axios.post(`${backendUrl}/api/forgotPassword`,{email},{
+            const {data} = await axios.post(`${API}/api/forgotPassword`,{email},{
                 headers:{
                     "content-type":"application/json",
                 }
@@ -69,7 +75,7 @@ const AppContextProvider = ({children}) => {
 
     const ResetPassword= async(token,password)=>{
         try{
-            const {data} = await axios.put(`${backendUrl}/api/resetPassword/${token}`,{password},{
+            const {data} = await axios.put(`${API}/api/resetPassword/${token}`,{password},{
                 headers:{
                     "Content-Type":"application/json",
                 }
@@ -89,7 +95,7 @@ const AppContextProvider = ({children}) => {
 
     const addIncome = async(title,amount,category,date,description) => {
         try{
-            const {data} = await axios.post(`${backendUrl}/api/add-income`,{title,amount,type: "income",category,date,description},{
+            const {data} = await axios.post(`${API}/api/add-income`,{title,amount,type: "income",category,date,description},{
                 headers:{
                     "Authorization": `Bearer ${utoken}`
                 }
@@ -108,7 +114,7 @@ const AppContextProvider = ({children}) => {
 
     const addExpense = async(title,amount,category,date,description) => {
         try{
-            const {data} = await axios.post(`${backendUrl}/api/add-expense`,{title,amount,type: "expense",category,date,description},{
+            const {data} = await axios.post(`${API}/api/add-expense`,{title,amount,type: "expense",category,date,description},{
                 headers:{
                     "Authorization": `Bearer ${utoken}`
                 }
@@ -125,7 +131,7 @@ const AppContextProvider = ({children}) => {
 
     const deleteIncome = async(id) => {
         try{
-            const {data} = await axios.delete(`${backendUrl}/api/delete-income/${id}`,{
+            const {data} = await axios.delete(`${API}/api/delete-income/${id}`,{
                 headers:{
                     "Authorization": `Bearer ${utoken}`
                 }
@@ -142,7 +148,7 @@ const AppContextProvider = ({children}) => {
 
     const deleteExpense = async(id) => {
         try{
-            const {data} = await axios.delete(`${backendUrl}/api/delete-expense/${id}`,{
+            const {data} = await axios.delete(`${API}/api/delete-expense/${id}`,{
                 headers:{
                     "Authorization": `Bearer ${utoken}`
                 }
@@ -159,7 +165,7 @@ const AppContextProvider = ({children}) => {
 
     const updateIncome = async(id, title, amount, category, date, description) => {
         try{
-            const {data} = await axios.put(`${backendUrl}/api/update-income/${id}`, {title, amount, type: "income", category, date, description},{
+            const {data} = await axios.put(`${API}/api/update-income/${id}`, {title, amount, type: "income", category, date, description},{
                 headers:{
                     "Authorization": `Bearer ${utoken}`
                 }
@@ -176,7 +182,7 @@ const AppContextProvider = ({children}) => {
 
     const updateExpense = async(id, title, amount, category, date, description) => {
         try{
-            const {data} = await axios.put(`${backendUrl}/api/update-expense/${id}`, {title, amount, type: "expense", category, date, description},{
+            const {data} = await axios.put(`${API}/api/update-expense/${id}`, {title, amount, type: "expense", category, date, description},{
                 headers:{
                     "Authorization": `Bearer ${utoken}`
                 }
@@ -194,7 +200,7 @@ const AppContextProvider = ({children}) => {
     const handleRegister = async(name,email,password) => {
         try{
 
-            const {data} = await axios.post(`${backendUrl}/api/register`,{name,email,password},{
+            const {data} = await axios.post(`${API}/api/register`,{name,email,password},{
                 headers:{
                     "content-type":"application/json",
                 }
@@ -218,7 +224,7 @@ const AppContextProvider = ({children}) => {
 
   const handleLogin = async (email, password) => {
   try {
-    const { data } = await axios.post(`${backendUrl}/api/login`,{ email, password },
+    const { data } = await axios.post(`${API}/api/login`,{ email, password },
       {
         headers: {
           "Content-Type": "application/json",
@@ -270,7 +276,7 @@ const AppContextProvider = ({children}) => {
     },[token]);
 
     const value ={
-        backendUrl,
+        API,
         handleRegister,
         handleLogin,
         fetchIncomeData,
