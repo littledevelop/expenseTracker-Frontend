@@ -10,107 +10,101 @@ import { AppContext } from "../context/AppContex";
 import { NavLink, useNavigate } from "react-router-dom";
 import cookie from "js-cookie";
 
-// Config outside component
 const menuItems = [
-  { to: "/", icon: GoGraph, label: "Dashboard" },
-  { to: "/view-transaction", icon: FaRegCreditCard, label: "Transaction" },
-  { to: "/income-transaction", icon: FaArrowsDownToLine, label: "Income History" },
-  { to: "/expense-transaction", icon: FaArrowsUpToLine, label: "Expense History" },
-  { to: "/add-income", icon: FaMoneyBillTrendUp, label: "Income" },
-  { to: "/add-expense", icon: GiExpense, label: "Expense" },
+  { to: "/", Icon: GoGraph, label: "Dashboard" },
+  { to: "/view-transaction", Icon: FaRegCreditCard, label: "Transactions" },
+  { to: "/income-transaction", Icon: FaArrowsDownToLine, label: "Income History" },
+  { to: "/expense-transaction", Icon: FaArrowsUpToLine, label: "Expense History" },
+  { to: "/add-income", Icon: FaMoneyBillTrendUp, label: "Add Income" },
+  { to: "/add-expense", Icon: GiExpense, label: "Add Expense" },
 ];
 
-// Reusable MenuItem
 const MenuItem = ({ to, Icon, label, onClose }) => (
   <NavLink
     to={to}
     onClick={onClose}
     className={({ isActive }) =>
-      `w-full flex flex-row items-center justify-center gap-2 py-2 px-2 rounded-lg cursor-pointer 
-       ${isActive ? "bg-red-600" : "lg:hover:bg-red-500"}`
+      `flex items-center gap-3 px-4 py-2 rounded-lg transition
+       ${isActive ? "bg-red-600" : "hover:bg-red-500"}`
     }
   >
-    <Icon className="text-2xl text-white" />
-    <p className="text-lg font-semibold hidden md:block text-white">{label}</p>
+    <Icon className="text-xl text-white" />
+    <span className="text-white text-sm font-medium hidden md:block">
+      {label}
+    </span>
   </NavLink>
 );
 
-const Sidebar = ({ onClose }) => {
+const Sidebar = ({ isOpen, onClose }) => {
   const { token, setToken } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const handleLogOut = () => {
+  const handleLogout = () => {
     setToken(null);
     cookie.remove("token", { path: "/" });
     navigate("/login");
   };
 
   return (
-    <div className="bg-gradient-to-b from-green-800 to-green-800 h-screen relative">
-      {/* Close button for mobile */}
-      <button
-        className="lg:hidden absolute top-4 right-4 text-white"
-        onClick={onClose}
+    <>
+      {/* Overlay (mobile only) */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-40 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-gradient-to-b from-green-800 to-green-700
+        transform transition-transform duration-300
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        lg:translate-x-0 lg:static`}
       >
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
+        {/* Logo */}
+        <div className="flex items-center justify-center py-4">
+          <img
+            src={logo}
+            alt="Expense Tracker"
+            className="w-32 cursor-pointer"
+            onClick={() => navigate("/")}
           />
-        </svg>
-      </button>
-
-      {/* Logo */}
-      <div className="mt-3 py-2 px-2">
-        <img
-          src={logo}
-          alt="Expense Tracker Logo"
-          onClick={() => navigate("/")}
-          className="mt-1 w-full hidden md:block cursor-pointer"
-        />
-        <img
-          src={logo}
-          alt="Expense Tracker Logo"
-          onClick={() => navigate("/")}
-          className="w-12 block md:hidden cursor-pointer"
-        />
-      </div>
-
-      {/* Menu Items */}
-      {menuItems.map(({ to, icon: Icon, label }) => (
-        <div key={to} className="flex flex-row items-center justify-center gap-5 py-2 px-2">
-          <MenuItem to={to} Icon={Icon} label={label} onClose={onClose} />
         </div>
-      ))}
 
-      {/* Auth Action */}
-      <div className="flex flex-row items-center justify-center gap-5 py-2 px-2">
-        {token ? (
-          <button
-            onClick={handleLogOut}
-            className="w-full flex flex-row items-center justify-center gap-2 py-2 px-2 rounded-lg cursor-pointer lg:hover:bg-red-500"
-          >
-            <IoLogOut className="text-2xl text-white" />
-            <p className="text-lg font-semibold hidden md:block text-white">LogOut</p>
-          </button>
-        ) : (
-          <NavLink
-            to="/login"
-            className="w-full flex flex-row items-center justify-center gap-2 py-2 px-2 rounded-lg cursor-pointer lg:hover:bg-red-500"
-          >
-            <IoLogOut className="text-2xl text-white" />
-            <p className="text-lg font-semibold hidden md:block text-white">LogIn</p>
-          </NavLink>
-        )}
-      </div>
-    </div>
+        {/* Menu */}
+        <nav className="flex flex-col gap-1 px-2">
+          {menuItems.map((item) => (
+            <MenuItem key={item.to} {...item} onClose={onClose} />
+          ))}
+        </nav>
+
+        {/* Auth */}
+        <div className="absolute bottom-4 w-full px-2">
+          {token ? (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 w-full px-4 py-2 rounded-lg hover:bg-red-500"
+            >
+              <IoLogOut className="text-xl text-white" />
+              <span className="text-white text-sm hidden md:block">
+                Logout
+              </span>
+            </button>
+          ) : (
+            <NavLink
+              to="/login"
+              className="flex items-center gap-3 w-full px-4 py-2 rounded-lg hover:bg-red-500"
+            >
+              <IoLogOut className="text-xl text-white" />
+              <span className="text-white text-sm hidden md:block">
+                Login
+              </span>
+            </NavLink>
+          )}
+        </div>
+      </aside>
+    </>
   );
 };
 

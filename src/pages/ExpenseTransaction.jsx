@@ -1,46 +1,83 @@
-import React, { useContext } from 'react'
-import { AppContext } from '../context/AppContex'
-import {FiTrash2} from 'react-icons/fi';
-const ExpenseTransaction = () => {
+import React, { useContext } from "react";
+import { AppContext } from "../context/AppContex";
+import { FiTrash2 } from "react-icons/fi";
 
-  const {expenseData,deleteExpense} = useContext(AppContext)
+const ExpenseTransaction = () => {
+  const { expenseData, deleteExpense } = useContext(AppContext);
+
   return (
-    <div className='max-w-full p-4 mt-14'>
-      <h1 className='text-3xl font-semibold mb-6 text-start'>Expense Transaction</h1>
-      <div className='overscroll-x-auto pr-8'>
-        <table className='w-full table-auto border-collapse bg-white shadow-lg rounded-lg'>
-          <thead>
-            <tr className='bg-gray-100 text-gray-700 uppercase text-sm'>
-              <th className='p-4 text-left'>Name</th>
-              <th className='p-4 text-left'>Category</th>
-              <th className='p-4 text-left'>Date</th>
-              <th className='p-4 text-left'>Amount</th>
-              <th className='p-4 text-left'>Action</th>
+    <div className="w-full p-4 mt-14">
+      <h1 className="text-2xl md:text-3xl font-semibold mb-6">
+        Expense Transactions
+      </h1>
+
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full bg-white shadow-lg rounded-lg">
+          <thead className="bg-gray-100 text-gray-700">
+            <tr>
+              <th className="p-3 text-left">Name</th>
+              <th className="p-3 text-left">Category</th>
+              <th className="p-3 text-left">Date</th>
+              <th className="p-3 text-left">Type</th>
+              <th className="p-3 text-right">Amount</th>
+              <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
+
           <tbody>
-            {
-              expenseData.map((transaction,index)=>(
-                <tr key={index} className='border-b last:border-none hover:bg-gray-50 transition-colors'>
-                  <td>{transaction.title}</td>
-                  <td>{transaction.category}</td>
-                  <td>{new Date(transaction.date).toLocaleDateString()}</td>
-                  <td>{transaction.type === "income" ? "Income" : "Expense"}</td>
-                  <td className="p-4 text-right font-semibold  text-red-500">$ {transaction.amount}</td>
-                  <td className='p-4 text-center'>
-                      <button className='text-red-500 hover:text-red-700 transition-colors' onClick={()=>deleteExpense(transaction._id)}>
-                        <FiTrash2 size={20}/>
-                      </button>
-                  </td>
-                </tr>
-              ))
-            }
+            {expenseData.map((t) => (
+              <tr key={t._id} className="border-b hover:bg-gray-50">
+                <td className="p-3">{t.title}</td>
+                <td className="p-3">{t.category}</td>
+                <td className="p-3">
+                  {new Date(t.date).toLocaleDateString()}
+                </td>
+                <td className="p-3 capitalize">{t.type}</td>
+                <td className="p-3 text-right font-semibold">
+                  ₹ {t.amount}
+                </td>
+                <td className="p-3 text-center">
+                  <button
+                    onClick={() => deleteExpense(t._id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <FiTrash2 size={18} />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
+      </div>
 
+      {/* Mobile Cards */}
+      <div className="md:hidden space-y-4">
+        {expenseData.map((t) => (
+          <div
+            key={t._id}
+            className="bg-white p-4 rounded-lg shadow"
+          >
+            <div className="flex justify-between">
+              <h3 className="font-semibold">{t.title}</h3>
+              <button
+                onClick={() => deleteExpense(t._id)}
+                className="text-red-500"
+              >
+                <FiTrash2 />
+              </button>
+            </div>
+
+            <p className="text-sm text-gray-500">{t.category}</p>
+            <p className="text-sm">{new Date(t.date).toLocaleDateString()}</p>
+            <p className="font-semibold mt-1">
+              ₹ {t.amount} ({t.type})
+            </p>
+          </div>
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ExpenseTransaction
+export default ExpenseTransaction;

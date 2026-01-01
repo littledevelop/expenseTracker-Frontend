@@ -3,80 +3,92 @@ import { AppContext } from "../context/AppContex";
 
 const Income = () => {
   const { addIncome } = useContext(AppContext);
+
   const [formData, setFormData] = useState({
     title: "",
     amount: "",
-    type: "",
+    category: "",
     description: "",
     date: "",
   });
 
-  const handleChange = (e)=>{
-    const {name,value} = e.target;
-    setFormData({...formData,[name]:value});
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-  const handleSubmit=(e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault();
+
     const amount = Number(formData.amount);
+    if (amount <= 0) return;
+
     addIncome(
       formData.title,
       amount,
-      formData.type,
+      formData.category,
       formData.date,
-      formData.description,
-    )
-  }
+      formData.description
+    );
+
+    // Reset form after submit
+    setFormData({
+      title: "",
+      amount: "",
+      category: "",
+      description: "",
+      date: "",
+    });
+  };
+
   return (
-    <div className="mx-auto max-w-md md:max-w-2xl mt-6 bg-white p-4 md:p-6 rounded-md shadow-md">
-      <h1 className="text-xl md:text-2xl font-semibold text-gray-700 mb-4 text-center">
-        Add Incomes
+    <div className="mx-auto max-w-md md:max-w-2xl mt-6 bg-white p-4 md:p-6 rounded-lg shadow">
+      <h1 className="text-xl md:text-2xl font-semibold text-gray-700 mb-6 text-center">
+        Add Income
       </h1>
-      <form action="" className="space-y-4" onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="title" className="block text-gray-600 mb-2 text-sm md:text-base">
-            Title
-          </label>
+
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        {/* Title */}
+        <div>
+          <label className="block text-gray-600 mb-1">Title</label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
-            placeholder="Enter Income Title"
+            placeholder="Salary / Freelance / Bonus"
+            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="amount" className="block text-gray-600 mb-2 text-sm md:text-base">
-            Amount
-          </label>
+        {/* Amount */}
+        <div>
+          <label className="block text-gray-600 mb-1">Amount</label>
           <input
             type="number"
             name="amount"
+            min="1"
             value={formData.amount}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
-            placeholder="Enter Income Amount"
+            placeholder="Enter amount"
+            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="type" className="block text-gray-600 mb-2 text-sm md:text-base">
-            Category
-          </label>
+        {/* Category */}
+        <div>
+          <label className="block text-gray-600 mb-1">Category</label>
           <select
-            name="type"
-            id="type"
-            value={formData.type}
+            name="category"
+            value={formData.category}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
+            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
             required
           >
             <option value="" disabled>
-              Select Category
+              Select category
             </option>
             <option value="salary">Salary</option>
             <option value="business">Business</option>
@@ -87,47 +99,42 @@ const Income = () => {
           </select>
         </div>
 
-
-
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-gray-600 mb-2 text-sm md:text-base">
-            Description
-          </label>
+        {/* Description */}
+        <div>
+          <label className="block text-gray-600 mb-1">Description</label>
           <textarea
             name="description"
-            id="description"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
-            placeholder="Please Enter a Description"
             rows="3"
-            required
             value={formData.description}
             onChange={handleChange}
-          ></textarea>
+            placeholder="Optional notes"
+            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+          />
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="date" className="block text-gray-600 mb-2 text-sm md:text-base">
-            Date
-          </label>
+        {/* Date */}
+        <div>
+          <label className="block text-gray-600 mb-1">Date</label>
           <input
             type="date"
             name="date"
-            id="date"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
             value={formData.date}
             onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
 
+        {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 text-sm md:text-base font-semibold"
+          className="w-full bg-blue-500 text-white py-3 rounded-md hover:bg-blue-600 transition font-semibold"
         >
-          Submit
+          Add Income
         </button>
       </form>
     </div>
   );
-}
+};
+
 export default Income;
