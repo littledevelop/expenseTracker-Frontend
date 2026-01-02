@@ -59,6 +59,7 @@ const AppContextProvider = ({children}) => {
 
     const ForgotPassword = async(email)=>{
         try{
+             console.log(email)
             const {data} = await axios.post(`${API}/api/forgotPassword`,{email},{
                 headers:{
                     "content-type":"application/json",
