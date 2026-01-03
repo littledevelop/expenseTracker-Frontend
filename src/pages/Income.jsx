@@ -42,29 +42,29 @@ const Income = () => {
   };
 
   return (
-    <div className="mx-auto max-w-md md:max-w-2xl mt-6 bg-white p-4 md:p-6 rounded-lg shadow">
-      <h1 className="text-xl md:text-2xl font-semibold text-gray-700 mb-6 text-center">
+    <div className="form-container">
+      <h1 className="form-title">
         Add Income
       </h1>
 
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         {/* Title */}
-        <div>
-          <label className="block text-gray-600 mb-1">Title</label>
+        <div className="form-group">
+          <label className="form-label">Title</label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
             placeholder="Salary / Freelance / Bonus"
-            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="form-input"
             required
           />
         </div>
 
         {/* Amount */}
-        <div>
-          <label className="block text-gray-600 mb-1">Amount</label>
+        <div className="form-group">
+          <label className="form-label">Amount</label>
           <input
             type="number"
             name="amount"
@@ -72,19 +72,19 @@ const Income = () => {
             value={formData.amount}
             onChange={handleChange}
             placeholder="Enter amount"
-            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="form-input"
             required
           />
         </div>
 
         {/* Category */}
-        <div>
-          <label className="block text-gray-600 mb-1">Category</label>
+        <div className="form-group">
+          <label className="form-label">Category</label>
           <select
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="form-select"
             required
           >
             <option value="" disabled>
@@ -100,27 +100,27 @@ const Income = () => {
         </div>
 
         {/* Description */}
-        <div>
-          <label className="block text-gray-600 mb-1">Description</label>
+        <div className="form-group">
+          <label className="form-label">Description</label>
           <textarea
             name="description"
             rows="3"
             value={formData.description}
             onChange={handleChange}
             placeholder="Optional notes"
-            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="form-textarea"
           />
         </div>
 
         {/* Date */}
-        <div>
-          <label className="block text-gray-600 mb-1">Date</label>
+        <div className="form-group">
+          <label className="form-label">Date</label>
           <input
             type="date"
             name="date"
             value={formData.date}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="form-input"
             required
           />
         </div>
@@ -128,7 +128,7 @@ const Income = () => {
         {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-3 rounded-md hover:bg-blue-600 transition font-semibold"
+          className="form-button"
         >
           Add Income
         </button>

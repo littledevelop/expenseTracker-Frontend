@@ -6,76 +6,62 @@ const ExpenseTransaction = () => {
   const { expenseData, deleteExpense } = useContext(AppContext);
 
   return (
-    <div className="w-full p-4 mt-14">
-      <h1 className="text-2xl md:text-3xl font-semibold mb-6">
+    <div className="content-wrapper mt-14">
+      <h1 className="history-title">
         Expense Transactions
       </h1>
 
-      {/* Desktop Table */}
-      <div className="hidden md:block overflow-x-auto">
-        <table className="w-full bg-white shadow-lg rounded-lg">
-          <thead className="bg-gray-100 text-gray-700">
-            <tr>
-              <th className="p-3 text-left">Name</th>
-              <th className="p-3 text-left">Category</th>
-              <th className="p-3 text-left">Date</th>
-              <th className="p-3 text-left">Type</th>
-              <th className="p-3 text-right">Amount</th>
-              <th className="p-3 text-center">Action</th>
-            </tr>
-          </thead>
+      {/* Empty State */}
+      {expenseData.length === 0 && (
+        <p className="empty-state mt-10">
+          No expense transactions found.
+        </p>
+      )}
 
-          <tbody>
-            {expenseData.map((t) => (
-              <tr key={t._id} className="border-b hover:bg-gray-50">
-                <td className="p-3">{t.title}</td>
-                <td className="p-3">{t.category}</td>
-                <td className="p-3">
-                  {new Date(t.date).toLocaleDateString()}
-                </td>
-                <td className="p-3 capitalize">{t.type}</td>
-                <td className="p-3 text-right font-semibold">
-                  ₹ {t.amount}
-                </td>
-                <td className="p-3 text-center">
-                  <button
-                    onClick={() => deleteExpense(t._id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <FiTrash2 size={18} />
-                  </button>
-                </td>
+      {/* Table */}
+      {expenseData.length > 0 && (
+        <div className="table-container table-scrollable">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th className="text-right">Amount</th>
+                <th className="text-center">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
 
-      {/* Mobile Cards */}
-      <div className="md:hidden space-y-4">
-        {expenseData.map((t) => (
-          <div
-            key={t._id}
-            className="bg-white p-4 rounded-lg shadow"
-          >
-            <div className="flex justify-between">
-              <h3 className="font-semibold">{t.title}</h3>
-              <button
-                onClick={() => deleteExpense(t._id)}
-                className="text-red-500"
-              >
-                <FiTrash2 />
-              </button>
-            </div>
-
-            <p className="text-sm text-gray-500">{t.category}</p>
-            <p className="text-sm">{new Date(t.date).toLocaleDateString()}</p>
-            <p className="font-semibold mt-1">
-              ₹ {t.amount} ({t.type})
-            </p>
-          </div>
-        ))}
-      </div>
+            <tbody>
+              {expenseData.map((t) => (
+                <tr key={t._id}>
+                  <td>{t.title}</td>
+                  <td style={{ textTransform: 'capitalize' }}>{t.category}</td>
+                  <td>
+                    {new Date(t.date).toLocaleDateString()}
+                  </td>
+                  <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {t.description || '-'}
+                  </td>
+                  <td className="table-amount expense">
+                    ₹ {Number(t.amount).toLocaleString('en-IN')}
+                  </td>
+                  <td className="text-center">
+                    <button
+                      onClick={() => deleteExpense(t._id)}
+                      className="card-delete-button"
+                      title="Delete"
+                    >
+                      <FiTrash2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

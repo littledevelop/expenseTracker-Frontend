@@ -1,4 +1,4 @@
-import "./App.css";
+import "./styles/main.css";
 import { ToastContainer } from "react-toastify";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -44,53 +44,49 @@ function App() {
   }, [token, fetchIncomeData, fetchExpenseData]);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="app-container">
       <ToastContainer />
 
       {isLogin ? (
         <>
           {/* Sidebar */}
-          <div
-            className={`fixed inset-y-0 left-0 z-50 w-64 shadow-lg transform ${
-              sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            } lg:translate-x-0 transition-transform duration-300`}
-          >
-            <Sidebar onClose={() => setSidebarOpen(false)} />
+          <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
           </div>
 
           {/* Mobile overlay */}
           {sidebarOpen && (
             <div
-              className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+              className="sidebar-overlay"
               onClick={() => setSidebarOpen(false)}
             />
           )}
 
           {/* Hamburger */}
           <button
-            className="lg:hidden fixed top-20 left-4 z-50 p-2 bg-blue-500 text-white rounded"
+            className="mobile-menu-toggle"
             onClick={() => setSidebarOpen(true)}
           >
             ☰
           </button>
 
           {/* Main */}
-          <div className="lg:ml-64">
+          <div className="main-content">
             {!hideMainLayout ? (
-              <div className="flex flex-col lg:flex-row">
-                <div className="flex-1 p-4">
+              <div className="layout-row">
+                <div className="layout-main">
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
                   </Routes>
                 </div>
-                <div className="lg:w-1/3 p-4">
+                <div className="layout-sidebar">
                   <Routes>
                     <Route path="/" element={<History />} />
                   </Routes>
                 </div>
               </div>
             ) : (
-              <div className="p-4">
+              <div className="content-wrapper">
                 <Routes>
                   <Route path="/view-transaction" element={<ViewTransaction />} />
                   <Route path="/add-income" element={<Income />} />
@@ -111,7 +107,7 @@ function App() {
         </>
       ) : (
         /* Auth Routes */
-        <div className="p-4">
+        <div className="content-wrapper">
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />

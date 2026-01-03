@@ -80,50 +80,50 @@ const History = () => {
   }
 
   return (
-    <div className='w-full mx-auto p-4'>
-      <h1 className='text-2xl md:text-3xl font-semibold text-center mb-6'>Transaction History</h1>
+    <div className='history-container'>
+      <h1 className='history-title'>Transaction History</h1>
 
       {/* Chart Section */}
-      <div className='mb-8 bg-white p-6 rounded-lg shadow-lg'>
-        <h2 className='text-xl font-semibold mb-4 text-center'>Spend Overview</h2>
-        <div className='h-80 md:h-96'>
+      <div className='chart-section'>
+        <h2 className='chart-title'>Spend Overview</h2>
+        <div className='chart-wrapper'>
           <Pie data={chartData} options={chartOptions} />
         </div>
       </div>
 
       {/* Income History */}
-      <div className='mb-6'>
-        <h2 className='text-xl font-semibold mb-4 text-green-600'>Income Transactions</h2>
-        <div className='space-y-2 max-h-60 overflow-y-auto'>
+      <div className='transaction-section'>
+        <h2 className='transaction-section-title income'>Income Transactions</h2>
+        <div className='transaction-list'>
           {incomeData.length > 0 ? incomeData.map((item,index)=>(
-            <div key={`income-${index}`} className='flex justify-between items-center p-3 bg-green-50 border border-green-200 rounded-lg'>
-              <div className='flex flex-col'>
-                <h1 className='text-sm font-medium text-gray-800'>{item.title}</h1>
-                <p className='text-sm text-gray-600'>Income</p>
+            <div key={`income-${index}`} className='transaction-item income'>
+              <div className='transaction-item-info'>
+                <h1 className='transaction-item-title'>{item.title}</h1>
+                <p className='transaction-item-type'>Income</p>
               </div>
-              <div className='text-sm font-semibold text-green-600'>
+              <div className='transaction-item-amount income'>
                 +${parsePrice(item.amount).toFixed(2)}
               </div>
             </div>
-          )) : <p className='text-gray-500 text-center'>No income transactions yet.</p>}
+          )) : <p className='empty-state'>No income transactions yet.</p>}
         </div>
       </div>
 
       {/* Expense History */}
-      <div className='mb-6'>
-        <h2 className='text-sm font-semibold mb-4 text-red-600'>Expense Transactions</h2>
-        <div className='space-y-2 max-h-60 overflow-y-auto'>
+      <div className='transaction-section'>
+        <h2 className='transaction-section-title expense'>Expense Transactions</h2>
+        <div className='transaction-list'>
           {expenseData.length > 0 ? expenseData.map((item,index)=>(
-            <div key={`expense-${index}`} className='flex justify-between items-center p-3 bg-red-50 border border-red-200 rounded-lg'>
-              <div className="flex flex-col">
-                <h1 className='text-sm font-medium text-gray-800'>{item.title}</h1>
-                <p className='text-sm text-gray-600'>Expense</p>
+            <div key={`expense-${index}`} className='transaction-item expense'>
+              <div className="transaction-item-info">
+                <h1 className='transaction-item-title'>{item.title}</h1>
+                <p className='transaction-item-type'>Expense</p>
               </div>
-              <div className='text-sm font-semibold text-red-600'>
+              <div className='transaction-item-amount expense'>
                 -${parsePrice(item.amount).toFixed(2)}
               </div>
             </div>
-          )) : <p className='text-gray-500 text-center'>No expense transactions yet.</p>}
+          )) : <p className='empty-state'>No expense transactions yet.</p>}
         </div>
       </div>
 

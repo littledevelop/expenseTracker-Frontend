@@ -37,20 +37,20 @@ const Expenses = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-6 bg-white p-4 sm:p-6 rounded-lg shadow">
+    <div className="form-container">
       
-      <h1 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-6 text-center">
+      <h1 className="form-title">
         Add Expense
       </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="form">
         
         {/* Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="form-grid">
 
           {/* Title */}
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
+          <div className="form-group">
+            <label className="form-label">
               Title
             </label>
             <input
@@ -59,14 +59,14 @@ const Expenses = () => {
               value={formData.title}
               onChange={handleChange}
               placeholder="Expense title"
-              className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+              className="form-input"
               required
             />
           </div>
 
           {/* Amount */}
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
+          <div className="form-group">
+            <label className="form-label">
               Amount
             </label>
             <input
@@ -76,21 +76,21 @@ const Expenses = () => {
               value={formData.amount}
               onChange={handleChange}
               placeholder="Amount"
-              className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+              className="form-input"
               required
             />
           </div>
 
           {/* Category */}
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
+          <div className="form-group">
+            <label className="form-label">
               Category
             </label>
             <select
               name="type"
               value={formData.type}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+              className="form-select"
               required
             >
               <option value="" disabled>Select Category</option>
@@ -108,8 +108,8 @@ const Expenses = () => {
           </div>
 
           {/* Date */}
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
+          <div className="form-group">
+            <label className="form-label">
               Date
             </label>
             <input
@@ -118,15 +118,15 @@ const Expenses = () => {
               max={new Date().toISOString().split("T")[0]}
               value={formData.date}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+              className="form-input"
               required
             />
           </div>
         </div>
 
         {/* Description */}
-        <div>
-          <label className="block text-sm font-medium text-gray-600 mb-1">
+        <div className="form-group">
+          <label className="form-label">
             Description
           </label>
           <textarea
@@ -135,7 +135,7 @@ const Expenses = () => {
             value={formData.description}
             onChange={handleChange}
             placeholder="Add details"
-            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="form-textarea"
             required
           />
         </div>
@@ -143,7 +143,7 @@ const Expenses = () => {
         {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition"
+          className="form-button"
         >
           Add Expense
         </button>

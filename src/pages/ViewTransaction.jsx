@@ -55,40 +55,40 @@ const ViewTransaction = () => {
   };
   
   return (
-    <div className='max-w-full p-4 mt-14'>
-      <h1 className='text-2xl md:text-3xl font-semibold mb-6 text-center'>Transaction History</h1>
-      <div className='overflow-x-auto pr-4'>
-        <table className='w-full table-auto border-collapse bg-white shadow-lg rounded-lg min-w-max'>
+    <div className='content-wrapper mt-14'>
+      <h1 className='history-title'>Transaction History</h1>
+      <div className='table-container'>
+        <table className='table'>
           <thead>
-            <tr className='bg-gray-100 text-gray-700 uppercase text-xs md:text-sm'>
-              <th className='p-2 md:p-4 text-left'>Name</th>
-              <th className='p-2 md:p-4 text-left'>Category</th>
-              <th className='p-2 md:p-4 text-left'>Date</th>
-              <th className='p-2 md:p-4 text-left'>Type</th>
-              <th className='p-2 md:p-4 text-left'>Amount</th>
-              <th className='p-2 md:p-4 text-left'>Actions</th>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {
               allTransaction.map((transaction,index)=>(
-                <tr key={index} className='border-b last:border-none hover:bg-gray-50 transition-colors'>
-                  <td className='p-2 md:p-4 text-sm md:text-base'>{transaction.title}</td>
-                  <td className='p-2 md:p-4 text-sm md:text-base'>{transaction.category}</td>
-                  <td className='p-2 md:p-4 text-sm md:text-base'>{new Date(transaction.date).toLocaleDateString()}</td>
-                  <td className='p-2 md:p-4 text-sm md:text-base'>{transaction.type === "income" ? "Income" : "Expense"}</td>
-                  <td className={`p-2 md:p-4 text-sm md:text-base font-semibold ${transaction.type === "income" ? "text-green-500" : "text-red-500"} `}>$ {transaction.amount}</td>
-                  <td className='p-2 md:p-4'>
-                    <div className='flex flex-col sm:flex-row gap-1'>
+                <tr key={index}>
+                  <td>{transaction.title}</td>
+                  <td>{transaction.category}</td>
+                  <td>{new Date(transaction.date).toLocaleDateString()}</td>
+                  <td>{transaction.type === "income" ? "Income" : "Expense"}</td>
+                  <td className={`table-amount ${transaction.type === "income" ? "income" : "expense"}`}>$ {transaction.amount}</td>
+                  <td>
+                    <div className='table-actions'>
                       <button 
                         onClick={() => handleEdit(transaction)}
-                        className='bg-blue-500 text-white px-2 py-1 md:px-3 md:py-1 rounded text-xs md:text-sm hover:bg-blue-600'
+                        className='btn btn-primary btn-small'
                       >
                         Edit
                       </button>
                       <button 
                         onClick={() => transaction.type === "income" ? deleteIncome(transaction._id) : deleteExpense(transaction._id)}
-                        className='bg-red-500 text-white px-2 py-1 md:px-3 md:py-1 rounded text-xs md:text-sm hover:bg-red-600'
+                        className='btn btn-danger btn-small'
                       >
                         Delete
                       </button>
@@ -104,39 +104,41 @@ const ViewTransaction = () => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white p-4 md:p-6 rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <h2 className="text-lg md:text-xl font-semibold mb-4">Edit {editingTransaction?.type === 'income' ? 'Income' : 'Expense'}</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3 md:mb-4">
-                <label className="block text-gray-700 mb-2 text-sm md:text-base">Title</label>
+        <div className="modal-overlay">
+          <div className="modal" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
+            <div className="modal-header">
+              <h2 className="modal-title">Edit {editingTransaction?.type === 'income' ? 'Income' : 'Expense'}</h2>
+            </div>
+            <form onSubmit={handleSubmit} className="form">
+              <div className="form-group">
+                <label className="form-label">Title</label>
                 <input
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded text-sm md:text-base"
+                  className="form-input"
                   required
                 />
               </div>
-              <div className="mb-3 md:mb-4">
-                <label className="block text-gray-700 mb-2 text-sm md:text-base">Amount</label>
+              <div className="form-group">
+                <label className="form-label">Amount</label>
                 <input
                   type="number"
                   name="amount"
                   value={formData.amount}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded text-sm md:text-base"
+                  className="form-input"
                   required
                 />
               </div>
-              <div className="mb-3 md:mb-4">
-                <label className="block text-gray-700 mb-2 text-sm md:text-base">Category</label>
+              <div className="form-group">
+                <label className="form-label">Category</label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded text-sm md:text-base"
+                  className="form-select"
                   required
                 >
                   <option value="">Select Category</option>
@@ -165,39 +167,39 @@ const ViewTransaction = () => {
                   )}
                 </select>
               </div>
-              <div className="mb-3 md:mb-4">
-                <label className="block text-gray-700 mb-2 text-sm md:text-base">Date</label>
+              <div className="form-group">
+                <label className="form-label">Date</label>
                 <input
                   type="date"
                   name="date"
                   value={formData.date}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded text-sm md:text-base"
+                  className="form-input"
                   required
                 />
               </div>
-              <div className="mb-3 md:mb-4">
-                <label className="block text-gray-700 mb-2 text-sm md:text-base">Description</label>
+              <div className="form-group">
+                <label className="form-label">Description</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded text-sm md:text-base"
+                  className="form-textarea"
                   rows="3"
                   required
                 />
               </div>
-              <div className="flex flex-col sm:flex-row justify-end gap-2">
+              <div className="form-group" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', gap: '0.5rem' }}>
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="bg-gray-500 text-white px-3 py-2 md:px-4 md:py-2 rounded text-sm md:text-base hover:bg-gray-600"
+                  className="btn btn-secondary"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-3 py-2 md:px-4 md:py-2 rounded text-sm md:text-base hover:bg-blue-600"
+                  className="btn btn-primary"
                 >
                   Update
                 </button>

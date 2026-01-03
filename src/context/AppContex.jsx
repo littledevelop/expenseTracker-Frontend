@@ -11,14 +11,12 @@ const AppContextProvider = ({children}) => {
     const [expenseData, setExpenseData] = useState([]);
     const [incomeData, setIncomeData] = useState([]);
     const [token,setToken]= useState(Boolean(cookie.get("token") || null));
+    const [userName, setUserName] = useState(cookie.get("userName") || null);
     // const backendUrl = "http://localhost:5000"; //local
     // const backendUrl = "https://expensetracker-backend-zw1n.onrender.com"; //live
-    //     const API =
-    //   process.env.REACT_APP_ENV === "production"
-    //     ? "https://expense-backend.onrender.com"
-    //     : "http://localhost:5000";
+    // const API ="http://localhost:5000";
     const API = process.env.REACT_APP_API_URL;//live
-
+    console.log("API",API)
     const utoken = cookie.get("token") || null;
 
     const fetchIncomeData = useCallback(async() => {
@@ -209,6 +207,10 @@ const AppContextProvider = ({children}) => {
 
             if(data.success){
                 cookie.set("token",data.token,{expires:7});
+                if(data.user && data.user.name){
+                    cookie.set("userName", data.user.name, {expires:7});
+                    setUserName(data.user.name);
+                }
                 setToken(true);
                 fetchIncomeData();
                 fetchExpenseData();
@@ -241,6 +243,12 @@ const AppContextProvider = ({children}) => {
         sameSite: "lax",
         secure: false, // set true in production (HTTPS)
       });
+
+      // Store user name
+      if(data.user && data.user.name){
+        cookie.set("userName", data.user.name, {expires:7});
+        setUserName(data.user.name);
+      }
 
       // Store token in state (NOT boolean)
       setToken(data.token);
@@ -293,6 +301,7 @@ const AppContextProvider = ({children}) => {
         incomeData,
         token,
         setToken,
+        userName,
         ForgotPassword,
         ResetPassword
     }

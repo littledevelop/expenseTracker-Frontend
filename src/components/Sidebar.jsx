@@ -24,12 +24,11 @@ const MenuItem = ({ to, Icon, label, onClose }) => (
     to={to}
     onClick={onClose}
     className={({ isActive }) =>
-      `flex items-center gap-3 px-4 py-2 rounded-lg transition
-       ${isActive ? "bg-red-600" : "hover:bg-red-500"}`
+      `menu-item ${isActive ? "active" : ""}`
     }
   >
-    <Icon className="text-xl text-white" />
-    <span className="text-white text-sm font-medium hidden md:block">
+    <Icon className="menu-item-icon" />
+    <span className="menu-item-text">
       {label}
     </span>
   </NavLink>
@@ -42,68 +41,52 @@ const Sidebar = ({ isOpen, onClose }) => {
   const handleLogout = () => {
     setToken(null);
     cookie.remove("token", { path: "/" });
+    cookie.remove("userName", { path: "/" });
     navigate("/login");
   };
 
   return (
     <>
-      {/* Overlay (mobile only) */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-40 z-40 lg:hidden"
-          onClick={onClose}
+      {/* Logo */}
+      <div className="sidebar-logo">
+        <img
+          src={logo}
+          alt="Expense Tracker"
+          onClick={() => navigate("/")}
         />
-      )}
+      </div>
 
-      {/* Sidebar */}
-      <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-gradient-to-b from-green-800 to-green-700
-        transform transition-transform duration-300
-        ${isOpen ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0 lg:static`}
-      >
-        {/* Logo */}
-        <div className="flex items-center justify-center py-4">
-          <img
-            src={logo}
-            alt="Expense Tracker"
-            className="w-32 cursor-pointer"
-            onClick={() => navigate("/")}
-          />
-        </div>
+      {/* Menu */}
+      <nav className="sidebar-nav">
+        {menuItems.map((item) => (
+          <MenuItem key={item.to} {...item} onClose={onClose} />
+        ))}
+      </nav>
 
-        {/* Menu */}
-        <nav className="flex flex-col gap-1 px-2">
-          {menuItems.map((item) => (
-            <MenuItem key={item.to} {...item} onClose={onClose} />
-          ))}
-        </nav>
-
-        {/* Auth */}
-        <div className="absolute bottom-4 w-full px-2">
-          {token ? (
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-3 w-full px-4 py-2 rounded-lg hover:bg-red-500"
-            >
-              <IoLogOut className="text-xl text-white" />
-              <span className="text-white text-sm hidden md:block">
-                Logout
-              </span>
-            </button>
-          ) : (
-            <NavLink
-              to="/login"
-              className="flex items-center gap-3 w-full px-4 py-2 rounded-lg hover:bg-red-500"
-            >
-              <IoLogOut className="text-xl text-white" />
-              <span className="text-white text-sm hidden md:block">
-                Login
-              </span>
-            </NavLink>
-          )}
-        </div>
-      </aside>
+      {/* Auth */}
+      <div className="sidebar-logout">
+        {token ? (
+          <button
+            onClick={handleLogout}
+            className="menu-item menu-item-logout"
+          >
+            <IoLogOut className="menu-item-icon" />
+            <span className="menu-item-text">
+              Logout
+            </span>
+          </button>
+        ) : (
+          <NavLink
+            to="/login"
+            className="menu-item"
+          >
+            <IoLogOut className="menu-item-icon" />
+            <span className="menu-item-text">
+              Login
+            </span>
+          </NavLink>
+        )}
+      </div>
     </>
   );
 };

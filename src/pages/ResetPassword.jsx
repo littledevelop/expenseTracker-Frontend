@@ -22,43 +22,43 @@ const ResetPassword = () => {
   return (
     <>
       {isModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg w-full max-w-md p-6">
+        <div className="modal-overlay">
+          <div className="modal">
 
             {/* Header */}
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Reset Password</h2>
+            <div className="modal-header">
+              <h2 className="modal-title">Reset Password</h2>
               <button
                 onClick={handleModal}
-                className="text-gray-600 hover:text-gray-900 text-xl"
+                className="modal-close"
               >
                 &times;
               </button>
             </div>
 
             {/* Debug token */}
-            <p className="text-xs text-gray-500 mb-3 break-all">
+            <p className="text-xs" style={{ color: 'var(--gray-500)', marginBottom: '0.75rem', wordBreak: 'break-all' }}>
               Token: {token}
             </p>
 
             {/* Form */}
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+            <form className="form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label">
                   Password
                 </label>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                   required
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold"
+                className="form-button"
               >
                 Reset Password
               </button>

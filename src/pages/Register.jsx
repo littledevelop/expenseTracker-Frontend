@@ -36,58 +36,58 @@ const Register = () => {
   return (
     <>
       {isModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg w-full max-w-md p-4 md:p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg md:text-xl font-semibold">Register</h2>
+        <div className="modal-overlay">
+          <div className="modal">
+            <div className="modal-header">
+              <h2 className="modal-title">Register</h2>
               <button
                 onClick={handleModal}
-                className="text-gray-600 hover:text-gray-900 text-xl"
+                className="modal-close"
               >
                 &times;
               </button>
             </div>
 
-            <form action="" onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm md:text-base font-medium text-gray-700">
+            <form action="" onSubmit={handleSubmit} className="form">
+              <div className="form-group">
+                <label htmlFor="name" className="form-label">
                   Name
                 </label>
                 <input
                   type="text"
                   name="name"
                   id="name"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm md:text-base"
+                  className="form-input"
                   required
                   value={formData.name}
                   onChange={handleChange}
                 />
               </div>
 
-              <div>
-                <label htmlFor="email" className="block text-sm md:text-base font-medium text-gray-700">
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">
                   Email
                 </label>
                 <input
                   type="email"
                   name="email"
                   id="email"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm md:text-base"
+                  className="form-input"
                   required
                   value={formData.email}
                   onChange={handleChange}
                 />
               </div>
 
-              <div>
-                <label htmlFor="password" className="block text-sm md:text-base font-medium text-gray-700">
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
                   Password
                 </label>
                 <input
                   type="password"
                   name="password"
                   id="password"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm md:text-base"
+                  className="form-input"
                   required
                   value={formData.password}
                   onChange={handleChange}
@@ -96,16 +96,16 @@ const Register = () => {
 
               <button
                 type="submit"
-                className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm md:text-base font-semibold"
+                className="form-button green"
               >
                 Register
               </button>
 
-              <p className="text-sm md:text-base text-center mt-4">
+              <p className="modal-text">
                 Already Have An Account ?{" "}
                 <button
                   type="button"
-                  className="text-blue-500 hover:underline"
+                  className="modal-link"
                   onClick={() => Navigate("/login")}
                 >
                   Login

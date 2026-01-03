@@ -29,18 +29,18 @@ const Login = () => {
   return (
     <>
       {isModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg w-full max-w-md p-4 md:p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg md:text-xl font-semibold">Login</h2>
-              <button onClick={handleModal} className="text-gray-600 hover:text-gray-900 text-xl">
+        <div className="modal-overlay">
+          <div className="modal">
+            <div className="modal-header">
+              <h2 className="modal-title">Login</h2>
+              <button onClick={handleModal} className="modal-close">
                 &times;
               </button>
             </div>
 
-            <form action="" className="space-y-4" onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="email" className="block text-sm md:text-base font-medium text-gray-700">
+            <form action="" className="form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">
                   Email
                 </label>
                 <input
@@ -49,13 +49,13 @@ const Login = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
+                  className="form-input"
                   required
                 />
               </div>
 
-              <div>
-                <label htmlFor="password" className="block text-sm md:text-base font-medium text-gray-700">
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
                   Password
                 </label>
                 <input
@@ -64,18 +64,20 @@ const Login = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
+                  className="form-input"
                   required
                 />
               </div>
 
-              <button type="submit" className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm md:text-base font-semibold">Login</button>
+              <button type="submit" className="form-button">Login</button>
 
-              <p className="text-sm md:text-base text-center mt-4">Don&apos;t Have an Account ?{" "}
-              <button type="button" onClick={()=>Navigate("/register")} className="text-blue-500 hover:underline"> Register </button></p>
+              <p className="modal-text">
+                Don&apos;t Have an Account ?{" "}
+                <button type="button" onClick={()=>Navigate("/register")} className="modal-link"> Register </button>
+              </p>
 
-              <p className="text-sm md:text-base text-center mt-4"> 
-              <button type="button" onClick={()=>Navigate("/forgotPassword")} className="text-blue-500 hover:underline">Forgot Password</button>
+              <p className="modal-text"> 
+                <button type="button" onClick={()=>Navigate("/forgotPassword")} className="modal-link">Forgot Password</button>
               </p>
 
             </form>

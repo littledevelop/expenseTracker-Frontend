@@ -91,9 +91,9 @@ const Chart = ({IncomeData, ExpenseData}) => { // Moved props to the outer funct
   };
 
   return (
-    <div className='p-6 flex flex-col'>
-      <h1 className='text-3xl font-semibold mb-4'>All Transaction</h1>      
-      <div className='rounded-lg md:max-w-full h-96'>
+    <div className='chart-component'>
+      <h1 className='chart-component-title'>All Transaction</h1>      
+      <div className='chart-wrapper-full'>
         <Line
           data={data}
           options={options}
