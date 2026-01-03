@@ -12,9 +12,7 @@ const AppContextProvider = ({children}) => {
     const [incomeData, setIncomeData] = useState([]);
     const [token,setToken]= useState(Boolean(cookie.get("token") || null));
     const [userName, setUserName] = useState(cookie.get("userName") || null);
-    // const backendUrl = "http://localhost:5000"; //local
-    // const backendUrl = "https://expensetracker-backend-zw1n.onrender.com"; //live
-    // const API ="http://localhost:5000";
+    
     const API = process.env.REACT_APP_API_URL;//live
     console.log("API",API)
     const utoken = cookie.get("token") || null;
