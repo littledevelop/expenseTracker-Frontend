@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/logo.png";
 import { GoGraph } from "react-icons/go";
 import { FaRegCreditCard } from "react-icons/fa";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";

@@ -14,7 +14,7 @@ const AppContextProvider = ({children}) => {
     const [userName, setUserName] = useState(cookie.get("userName") || null);
     
     const API = process.env.REACT_APP_API_URL;//live
-    console.log("API",API)
+    // console.log("API",API)
     const utoken = cookie.get("token") || null;
 
     const fetchIncomeData = useCallback(async() => {
@@ -55,7 +55,6 @@ const AppContextProvider = ({children}) => {
 
     const ForgotPassword = async(email)=>{
         try{
-             console.log(email)
             const {data} = await axios.post(`${API}/api/forgotPassword`,{email},{
                 headers:{
                     "content-type":"application/json",
@@ -225,7 +224,6 @@ const AppContextProvider = ({children}) => {
 
   const handleLogin = async (email, password) => {
   try {
-    console.log(API)
     const { data } = await axios.post(`${API}/api/login`,{ email, password },
       {
         headers: {

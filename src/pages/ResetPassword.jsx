@@ -36,10 +36,10 @@ const ResetPassword = () => {
               </button>
             </div>
 
-            {/* Debug token */}
+            {/* Debug token
             <p className="text-xs" style={{ color: 'var(--gray-500)', marginBottom: '0.75rem', wordBreak: 'break-all' }}>
               Token: {token}
-            </p>
+            </p> */}
 
             {/* Form */}
             <form className="form" onSubmit={handleSubmit}>
