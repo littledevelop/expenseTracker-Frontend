@@ -62,13 +62,15 @@ function App() {
             />
           )}
 
-          {/* Hamburger */}
-          <button
-            className="mobile-menu-toggle"
-            onClick={() => setSidebarOpen(true)}
-          >
-            ☰
-          </button>
+{/* Hamburger */}
+{!sidebarOpen && (
+  <button
+    className="mobile-menu-toggle"
+    onClick={() => setSidebarOpen(true)}
+  >
+    ☰
+  </button>
+)}
 
           {/* Main */}
           <div className="main-content">
